@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "j6SLSEViYtjtdqwkO4y6Rb1OsKrmrKUOsZzZHB73jnE=",
+  "Source": "HealthTracker.api",
+  "BasePath": "_content/HealthTracker.api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
