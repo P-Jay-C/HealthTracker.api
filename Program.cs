@@ -1,4 +1,5 @@
 using HealthTracker.api.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddApiVersioning(options =>
+    {
+        // Provides api versioning to the request 
+        options.ReportApiVersions = true;
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.DefaultApiVersion = ApiVersion.Default;
+    }
+    );
+
 
 var app = builder.Build();
 

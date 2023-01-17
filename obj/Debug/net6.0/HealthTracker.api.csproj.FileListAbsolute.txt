@@ -78,3 +78,11 @@ C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.As
 C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\System.Security.Permissions.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Versioning.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
