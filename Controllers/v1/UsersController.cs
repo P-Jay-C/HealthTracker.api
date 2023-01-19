@@ -1,11 +1,14 @@
 ﻿using HealthTracker.api.Data;
 using HealthTracker.api.Dtos.InComming;
 using HealthTracker.api.Model;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthTracker.api.Controllers.v1
 {
-    
+
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : BaseController
     { 
         

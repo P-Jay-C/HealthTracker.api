@@ -28,13 +28,14 @@ namespace HealthTracker.api.Repository
 
         public virtual async Task<bool> Add(T entity)
         {
-            await dbSet.AddAsync(entity);
+            await dbSet.AddAsync(entity);  
 
             return true;
         }
 
         public Task<bool> Delete(Guid id, string UserId)
         {
+            // var user = dbSet.FirstAsync();
             throw new NotImplementedException();
         }
 

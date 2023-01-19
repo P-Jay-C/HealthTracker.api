@@ -86,3 +86,6 @@ C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.Id
 C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\HealthTracker.api.staticwebassets.runtime.json
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\USER\NET_Core_Tutorials\HealthTracker.api\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Embedded.dll
