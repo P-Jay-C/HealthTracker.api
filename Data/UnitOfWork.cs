@@ -7,7 +7,8 @@ namespace HealthTracker.api.Data
         private readonly AppDbContext _context;
         private readonly ILogger _logger;
 
-        public IUserRepository User { get; set; } 
+        public IUserRepository User { get; private set; }
+        public IRefreshTokenRepository RefreshToken { get; private set; }
 
         public UnitOfWork(AppDbContext context, ILoggerFactory loggerFactory)
         {
@@ -15,6 +16,7 @@ namespace HealthTracker.api.Data
             _logger = loggerFactory.CreateLogger("db_logs");
 
             User = new UserRepository(context, logger: _logger);
+            RefreshToken = new RefreshTokenRepository(context, logger: _logger);
         }
 
         public async Task CompleteAsync()

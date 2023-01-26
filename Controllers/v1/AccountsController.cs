@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using HealthTracker.api.Configuration;
 using HealthTracker.api.Data;
+using HealthTracker.api.Dtos.Generic;
 using HealthTracker.api.Dtos.InComming;
 using HealthTracker.api.Dtos.OutGoing;
 using HealthTracker.api.Model;
@@ -16,17 +17,22 @@ namespace HealthTracker.api.Controllers.v1
 {
     public class AccountsController : BaseController
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtConfig _jwtConfig;
 
 
         public AccountsController(
-            IUnitOfWork unitOfWork, 
+            IUnitOfWork unitOfWork,
             UserManager<IdentityUser> userManager,
+            TokenValidationParameters tokenValidationParameters,
             IOptionsMonitor<JwtConfig> optionsMonitor) : base(unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
-            _jwtConfig = optionsMonitor.CurrentValue; 
+            _tokenValidationParameters = tokenValidationParameters;
+            _jwtConfig = optionsMonitor.CurrentValue;
         }
 
         [HttpPost]
@@ -40,7 +46,7 @@ namespace HealthTracker.api.Controllers.v1
                 var userExists = await _userManager.FindByEmailAsync(userRegistrationDto.Email);
 
 
-                if(userExists != null)
+                if (userExists != null)
                 {
                     return BadRequest(new UserRegistrationResponseDto()
                     {
@@ -62,21 +68,21 @@ namespace HealthTracker.api.Controllers.v1
                     EmailConfirmed = true
                 };
 
-                var isCreated = await _userManager.CreateAsync(newUser,userRegistrationDto.Password);
+                var isCreated = await _userManager.CreateAsync(newUser, userRegistrationDto.Password);
 
                 if (!isCreated.Succeeded)
                 {
                     return BadRequest(new UserRegistrationResponseDto()
                     {
                         Success = false,
-                        Errors = isCreated.Errors.Select(x=> x.Description).ToList()
+                        Errors = isCreated.Errors.Select(x => x.Description).ToList()
                     });
                 }
 
 
                 User _user = new User();
                 _user.IdentityId = new Guid(newUser.Id);
-                _user.DateOfBirth = DateTime.Now;//Convert.ToDateTime(newUser.DateOfBirth);
+                _user.DateOfBirth = DateTime.Now; //Convert.ToDateTime(newUser.DateOfBirth);
                 _user.Country = "";
                 _user.Email = userRegistrationDto.Email;
                 _user.FirstName = userRegistrationDto.FirstName;
@@ -89,14 +95,15 @@ namespace HealthTracker.api.Controllers.v1
                 await _unitOfWork.CompleteAsync();
 
                 // Create a jwt token
-                var token = GenerateJwtToken(newUser);
+                var token = await GenerateJwtToken(newUser);
 
                 // return back to the user
 
                 return Ok(new UserRegistrationResponseDto()
                 {
                     Success = true,
-                    Token = token
+                    Token = token.JwTToken,
+                    RefreshToken = token.RefreshToken
                 });
 
             }
@@ -140,12 +147,14 @@ namespace HealthTracker.api.Controllers.v1
 
                 if (isCorrect)
                 {
-                    var jwtToken = GenerateJwtToken(userExits);
+                    var jwtToken = await GenerateJwtToken(userExits);
 
                     return Ok(new UserLoginResponseDto()
                     {
                         Success = true,
-                        Token = jwtToken
+                        Token = jwtToken.JwTToken,
+                        RefreshToken = jwtToken.RefreshToken
+
                     });
 
                 }
@@ -162,7 +171,7 @@ namespace HealthTracker.api.Controllers.v1
                 }
             }
             else
-            {
+            { 
                 return BadRequest(new UserLoginResponseDto()
                 {
                     Success = false,
@@ -175,8 +184,8 @@ namespace HealthTracker.api.Controllers.v1
 
         }
 
-        
-        private string GenerateJwtToken(IdentityUser user)
+
+        private async Task<TokenData> GenerateJwtToken(IdentityUser user)
         {
             var jwtHandler = new JwtSecurityTokenHandler();
 
@@ -192,11 +201,11 @@ namespace HealthTracker.api.Controllers.v1
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 
                 }),
-                Expires = DateTime.UtcNow.AddHours(3),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature
-                )
+                ),
+                Expires = DateTime.UtcNow.Add(_jwtConfig.ExpiryDateFrame)
             };
 
             // Generate the security obj token
@@ -205,7 +214,40 @@ namespace HealthTracker.api.Controllers.v1
             // Convert the security obj token into a string
             var jwtToken = jwtHandler.WriteToken(token);
 
-            return jwtToken;
+            // Generate a refresh token
+            var refreshToken = new RefreshToken()
+            {
+                AddedDate = DateTime.UtcNow,
+                Token = $"{RandomStringGenerator(25)}_{Guid.NewGuid()}",
+                UserId = user.Id,
+                IsRevoked = false,
+                IsUsed = false,
+                status = 1,
+                JwtId = token.Id,
+                ExpiryDate = DateTime.UtcNow.AddMonths(6)
+            };
+
+
+            await _unitOfWork.RefreshToken.Add(refreshToken);
+            await _unitOfWork.CompleteAsync();
+
+            var tokenData = new TokenData()
+            {
+                JwTToken = jwtToken,
+                RefreshToken = refreshToken.Token 
+            };
+
+
+            return tokenData;
+        }
+
+        private string RandomStringGenerator(int length)
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

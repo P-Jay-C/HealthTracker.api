@@ -25,7 +25,7 @@ namespace HealthTracker.api.Controllers.v1
             // var Users = _context.Users.Where(x => x.status == 1).ToList();
             var users = await _unitOfWork.User.All();
 
-            return Ok(users);
+            return Ok(users); 
         }
 
         [HttpPost]
