@@ -69,6 +69,10 @@ namespace HealthTracker.api.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -91,7 +95,15 @@ namespace HealthTracker.api.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("MobileNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Sex")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

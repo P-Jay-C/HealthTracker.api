@@ -15,6 +15,5 @@ namespace HealthTracker.api.Model
 
         [ForeignKey(nameof(UserId))]
         public IdentityUser User { get; set; }
-        
     }
 }

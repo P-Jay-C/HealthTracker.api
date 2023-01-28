@@ -12,6 +12,6 @@
 
         Task<bool> Delete(Guid id, string UserId);
 
-        Task<bool> Update(T entity);
+        Task<bool> Update(T entity); 
     }
 }

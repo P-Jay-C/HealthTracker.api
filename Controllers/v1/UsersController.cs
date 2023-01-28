@@ -3,6 +3,7 @@ using HealthTracker.api.Dtos.InComming;
 using HealthTracker.api.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthTracker.api.Controllers.v1
@@ -13,7 +14,8 @@ namespace HealthTracker.api.Controllers.v1
     { 
         
         // private readonly AppDbContext _context;
-        public UsersController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public UsersController(IUnitOfWork unitOfWork,
+            UserManager<IdentityUser> userManager) : base(unitOfWork, userManager)
         {
         }
 
